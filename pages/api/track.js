@@ -13,6 +13,7 @@ export default (req, res) => {
     {
       documentPath: req.body.path,
       ipOverride: ip,
+      userAgentOverride: req.headers["user-agent"],
     },
     function (err) {
       res.status(200).send({ done: true });
