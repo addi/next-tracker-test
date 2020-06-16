@@ -21,15 +21,16 @@ export default function App({ Component, pageProps }) {
     localStorage.removeItem(key);
   };
 
-  useEffect(() => {
-    // trackUrl(Router.pathname);
+  const createId = () => {
+    return Math.floor(Math.random() * 100).toString();
+  };
 
+  useEffect(() => {
     Router.events.on("routeChangeComplete", trackUrl);
 
     window.addEventListener("storage", function (e) {
       if (e.key == "next_vercel_tracking: sId" && sID === undefined) {
-        console.log("got the id sent!");
-
+        console.log("Got an id", e.newValue);
         sID = e.newValue;
         trackUrl(Router.pathname);
       }
@@ -44,10 +45,13 @@ export default function App({ Component, pageProps }) {
 
     setTimeout(() => {
       if (sID === undefined) {
-        sID = Math.floor(Math.random() * 100).toString();
+        sID = createId();
+
+        console.log("create id", sID);
+
         trackUrl(Router.pathname);
       }
-    }, 1000);
+    }, 50);
   }, []);
 
   return <Component {...pageProps} />;
