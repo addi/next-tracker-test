@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-
+import { v4 as uuidv4 } from "uuid";
 import Router from "next/router";
 
 var sID = undefined;
@@ -12,17 +12,13 @@ export default function App({ Component, pageProps }) {
         "Content-Type": "application/json",
       },
       method: "POST",
-      body: JSON.stringify({ path: path }),
+      body: JSON.stringify({ path: path, sID: sID }),
     });
   };
 
   const sendMsg = (key, value) => {
     localStorage.setItem(key, value);
     localStorage.removeItem(key);
-  };
-
-  const createId = () => {
-    return Math.floor(Math.random() * 100).toString();
   };
 
   useEffect(() => {
@@ -45,8 +41,7 @@ export default function App({ Component, pageProps }) {
 
     setTimeout(() => {
       if (sID === undefined) {
-        sID = createId();
-
+        sID = uuidv4();
         console.log("create id", sID);
 
         trackUrl(Router.pathname);

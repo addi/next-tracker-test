@@ -1,7 +1,7 @@
 import ua from "universal-analytics";
 
 export default (req, res) => {
-  const visitor = ua("UA-8852949-7");
+  const visitor = ua("UA-8852949-7", req.body.sID);
 
   var ip =
     (req.headers["x-forwarded-for"] || "").split(",").pop().trim() ||
@@ -16,7 +16,7 @@ export default (req, res) => {
       userAgentOverride: req.headers["user-agent"],
     },
     function (err) {
-      res.status(200).send({ done: true });
+      res.status(200).send({});
     }
   );
 };
