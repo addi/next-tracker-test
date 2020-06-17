@@ -5,7 +5,7 @@ const anonymizeIp = (ip) => {
 
   const ipBits = ip.split(ipSplitter);
 
-  ipBits[ipBits.lenth - 1] = "1";
+  ipBits[ipBits.length - 1] = "1";
 
   return ipBits.join(ipSplitter);
 };
