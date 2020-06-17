@@ -37,7 +37,7 @@ export default function App({ Component, pageProps }) {
     });
 
     console.log("Asked for the id");
-    sendMsg("next_vercel_tracking: send_sId", sID);
+    sendMsg("next_vercel_tracking: send_sId", "");
 
     setTimeout(() => {
       if (sID === undefined) {
