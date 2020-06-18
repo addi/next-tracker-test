@@ -1,34 +1,49 @@
 import ua from "universal-analytics";
 
-const anonymizeIp = (ip) => {
-  const ipSplitter = ip.includes(":") ? ":" : ".";
-
-  const ipBits = ip.split(ipSplitter);
-
-  ipBits[ipBits.length - 1] = "1";
-
-  return ipBits.join(ipSplitter);
+const settings = {
+  googleAnalyticsAccountId: "UA-8852949-7",
+  sendSessionId: true,
+  sendIp: true,
+  anonymizeIp: true,
+  sendUserAgent: true,
 };
 
 export default (req, res) => {
-  const visitor = ua("UA-8852949-7", req.body.sID);
+  const anonymizeIp = (ip) => {
+    const ipSplitter = ip.includes(":") ? ":" : ".";
 
-  const ip =
+    const ipBits = ip.split(ipSplitter);
+
+    ipBits[ipBits.length - 1] = "1";
+
+    return ipBits.join(ipSplitter);
+  };
+
+  const sID = settings.sendSessionId ? req.body.sID : undefined;
+
+  const visitor = ua(settings.googleAnalyticsAccountId, sID);
+
+  const clientIp =
     (req.headers["x-forwarded-for"] || "").split(",").pop().trim() ||
     req.connection.remoteAddress ||
     req.socket.remoteAddress ||
     req.connection.socket.remoteAddress;
 
-  const anonymizedIp = anonymizeIp(ip);
+  var params = {
+    documentPath: req.body.path,
+  };
 
-  visitor.pageview(
-    {
-      documentPath: req.body.path,
-      ipOverride: anonymizedIp,
-      userAgentOverride: req.headers["user-agent"],
-    },
-    function (err) {
-      res.status(200).send({});
-    }
-  );
+  if (settings.sendIp) {
+    params["ipOverride"] = settings.anonymizeIp
+      ? anonymizeIp(clientIp)
+      : clientIp;
+  }
+
+  if (settings.sendUserAgent) {
+    params["userAgentOverride"] = req.headers["user-agent"];
+  }
+
+  visitor.pageview(params, function (err) {
+    res.status(200).send({});
+  });
 };
