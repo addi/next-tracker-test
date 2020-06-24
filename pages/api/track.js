@@ -6,6 +6,7 @@ const settings = {
   sendIp: true,
   anonymizeIp: true,
   sendUserAgent: true,
+  sendScreenResolution: false,
 };
 
 export default (req, res) => {
@@ -19,7 +20,7 @@ export default (req, res) => {
     return ipBits.join(ipSplitter);
   };
 
-  const sID = settings.sendSessionId ? req.body.sID : undefined;
+  const sID = settings.sendSessionId ? req.body.sessionId : undefined;
 
   const visitor = ua(settings.googleAnalyticsAccountId, sID);
 
@@ -31,6 +32,7 @@ export default (req, res) => {
 
   var params = {
     documentPath: req.body.path,
+    documentReferrer: req.body.referrer,
   };
 
   if (settings.sendIp) {
@@ -41,6 +43,10 @@ export default (req, res) => {
 
   if (settings.sendUserAgent) {
     params["userAgentOverride"] = req.headers["user-agent"];
+  }
+
+  if (settings.sendScreenResolution) {
+    params["screenResolution"] = req.body.screenResolution;
   }
 
   visitor.pageview(params, function (err) {
