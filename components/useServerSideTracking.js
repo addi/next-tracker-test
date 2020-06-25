@@ -15,8 +15,6 @@ export default function useServerSideTracking(url = "/api/track") {
       screenResolution: screenResolution,
     };
 
-    console.table(body);
-
     await fetch(url, {
       headers: {
         Accept: "application/json",
@@ -69,7 +67,6 @@ export default function useServerSideTracking(url = "/api/track") {
     setTimeout(() => {
       if (sID === undefined) {
         sID = uuidv4();
-        console.log("create id", sID);
 
         postAnalytics(
           sID,
