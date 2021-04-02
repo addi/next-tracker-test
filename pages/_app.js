@@ -1,4 +1,4 @@
-import useServerSideTracking from "../components/useServerSideTracking";
+import useServerSideTracking from "next-backend-analytics/useServerSideTracking";
 
 export default function App({ Component, pageProps }) {
   useServerSideTracking();

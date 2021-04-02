@@ -11,6 +11,6 @@
     "next": "9.3.5",
     "react": "16.13.1",
     "react-dom": "16.13.1",
-    "universal-analytics": "^0.4.20"
+    "next-backend-analytics": "/Users/addi/Development/test-package"
   }
 }
